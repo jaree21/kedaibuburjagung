@@ -1,0 +1,1647 @@
+<!DOCTYPE html>
+<!-- saved from url=(0054)http://localhost/kedai_bubur_jagung/customer/order.php -->
+<html lang="id"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kedai Bubur Jagung</title>
+    <style>
+        /* Reset CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-color: #ffc107;
+            --primary-dark: #e6a800;
+            --primary-light: #fff3cd;
+            --secondary-color: #343a40;
+            --light-color: #f8f9fa;
+            --gray-color: #6c757d;
+            --success-color: #28a745;
+        }
+
+        body {
+            background-color: #fff;
+            color: var(--secondary-color);
+            line-height: 1.6;
+        }
+
+        /* Header Minimalis */
+        header {
+            background-color: var(--primary-color);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            position: relative;
+        }
+
+        /* Logo */
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--secondary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            z-index: 1002;
+        }
+
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+            border-radius: 8px;
+        }
+
+        /* Cart & Hamburger Container */
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 1002;
+        }
+
+        /* Cart Icon */
+        .cart-icon {
+            position: relative;
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-size: 24px;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            background-color: rgba(52, 58, 64, 0.1);
+        }
+
+        .cart-icon:hover {
+            background-color: var(--primary-dark);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .cart-counter {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: #dc3545;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            background-color: rgba(52, 58, 64, 0.1);
+        }
+
+        .hamburger:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: var(--secondary-color);
+            margin: 3px 0;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(9px, 9px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(9px, -9px);
+        }
+
+        /* Navigation Menu */
+        .nav-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 320px;
+            height: 100vh;
+            background: linear-gradient(135deg, #fff 0%, var(--primary-light) 100%);
+            box-shadow: -5px 0 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1001;
+            padding: 80px 30px 30px;
+            overflow-y: auto;
+        }
+
+        .nav-menu.active {
+            right: 0;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .nav-links li {
+            width: 100%;
+        }
+
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 500;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 193, 7, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .nav-links a:hover {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            transform: translateX(10px);
+            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.3);
+        }
+
+        .nav-links a:hover::before {
+            left: 100%;
+        }
+
+        /* Menu Icons */
+        .nav-links a::after {
+            content: '→';
+            margin-left: auto;
+            transition: transform 0.3s ease;
+            opacity: 0;
+        }
+
+        .nav-links a:hover::after {
+            opacity: 1;
+            transform: translateX(5px);
+        }
+
+        /* Menu khusus untuk tracking */
+        .nav-links a[href*="track_order"] {
+            background-color: rgba(40, 167, 69, 0.1);
+            border: 2px solid rgba(40, 167, 69, 0.2);
+        }
+
+        .nav-links a[href*="track_order"]:hover {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        /* Overlay */
+        .nav-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .nav-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.9), rgba(230, 168, 0, 0.9)), url('../assets/images/hero-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            color: var(--secondary-color);
+            text-align: center;
+            padding: 120px 20px 80px;
+            margin-top: 70px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0.9;
+        }
+
+        /* Button Styles */
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(52, 58, 64, 0.3);
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(52, 58, 64, 0.4);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--secondary-color);
+            color: var(--secondary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        /* Section Styling */
+        section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 36px;
+            color: var(--secondary-color);
+            position: relative;
+            padding-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-dark));
+            border-radius: 2px;
+        }
+
+        /* Card Styling */
+        .card {
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        .card-title {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: var(--secondary-color);
+            font-weight: 600;
+        }
+
+        .card-text {
+            color: var(--gray-color);
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .card-price {
+            font-weight: bold;
+            color: var(--primary-dark);
+            font-size: 20px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        /* Grid Layout */
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -15px;
+        }
+
+        .col {
+            padding: 0 15px;
+            margin-bottom: 30px;
+        }
+
+        .col-12 {
+            width: 100%;
+        }
+
+        .col-6 {
+            width: 50%;
+        }
+
+        .col-4 {
+            width: 33.33%;
+        }
+
+        .col-3 {
+            width: 25%;
+        }
+
+        /* Form Styling */
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 15px 20px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* Alert Messages */
+        .alert {
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border: none;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Cart Styles */
+        .cart-summary {
+            background-color: var(--primary-light);
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-total {
+            font-weight: bold;
+            font-size: 20px;
+            text-align: right;
+            margin-top: 20px;
+            color: var(--primary-dark);
+        }
+
+        /* Checkout Section */
+        .checkout-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .checkout-details {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .checkout-summary {
+            flex: 0 0 350px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-menu {
+                width: 280px;
+            }
+
+            .hero {
+                padding: 100px 20px 60px;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .checkout-container {
+                flex-direction: column;
+            }
+
+            .checkout-summary {
+                flex: none;
+            }
+
+            .col-sm-6 {
+                width: 50%;
+            }
+
+            .col-sm-12 {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .nav-menu {
+                width: 100%;
+            }
+
+            .navbar {
+                padding: 12px 0;
+            }
+
+            .logo {
+                font-size: 20px;
+            }
+
+            .col {
+                width: 100%;
+            }
+
+            .card-img {
+                height: 180px;
+            }
+
+            .section-title h2 {
+                font-size: 28px;
+            }
+
+            section {
+                padding: 60px 0;
+            }
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="http://localhost/kedai_bubur_jagung/" class="logo">
+                    <img src="./order_files/logo.png" alt="Logo Kedai Bubur Jagung" onerror="this.src=&#39;data:image/svg+xml;utf8,&lt;svg xmlns=\&#39;http://www.w3.org/2000/svg\&#39; width=\&#39;40\&#39; height=\&#39;40\&#39;&gt;&lt;rect width=\&#39;40\&#39; height=\&#39;40\&#39; fill=\&#39;%23ffc107\&#39; rx=\&#39;8\&#39;/&gt;&lt;text x=\&#39;50%\&#39; y=\&#39;50%\&#39; font-size=\&#39;18\&#39; font-weight=\&#39;bold\&#39; text-anchor=\&#39;middle\&#39; dominant-baseline=\&#39;middle\&#39; fill=\&#39;%23343a40\&#39;&gt;KB&lt;/text&gt;&lt;/svg&gt;&#39;">
+                    Kedai Bubur Jagung
+                </a>
+
+                <div class="nav-controls">
+                    <a href="http://localhost/kedai_bubur_jagung/customer/checkout.php" class="cart-icon" title="Keranjang Belanja">
+                        🛒
+                                            </a>
+
+                    <button class="hamburger" id="hamburgerMenu" aria-label="Menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Navigation Menu -->
+        <div class="nav-menu" id="navMenu">
+            <ul class="nav-links">
+                <li><a href="http://localhost/kedai_bubur_jagung/index.php">🏠 Beranda</a></li>
+                <li><a href="http://localhost/kedai_bubur_jagung/customer/menu.php">🍽️ Menu</a></li>
+                <li><a href="http://localhost/kedai_bubur_jagung/customer/order.php">📝 Pesan Sekarang</a></li>
+                <li><a href="http://localhost/kedai_bubur_jagung/customer/about-contact.php">ℹ️ Tentang Kami</a></li>
+                <li><a href="http://localhost/kedai_bubur_jagung/customer/track_order.php">🔍 Lacak Pesanan</a></li>
+            </ul>
+        </div>
+
+        <!-- Overlay -->
+        <div class="nav-overlay" id="navOverlay"></div>
+    </header>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.getElementById('hamburgerMenu');
+            const navMenu = document.getElementById('navMenu');
+            const navOverlay = document.getElementById('navOverlay');
+            const body = document.body;
+
+            function toggleMenu() {
+                const isActive = navMenu.classList.contains('active');
+
+                if (isActive) {
+                    // Tutup menu
+                    navMenu.classList.remove('active');
+                    navOverlay.classList.remove('active');
+                    hamburger.classList.remove('active');
+                    body.style.overflow = '';
+                } else {
+                    // Buka menu
+                    navMenu.classList.add('active');
+                    navOverlay.classList.add('active');
+                    hamburger.classList.add('active');
+                    body.style.overflow = 'hidden';
+                }
+            }
+
+            // Event listeners
+            hamburger.addEventListener('click', function(e) {
+                e.stopPropagation();
+                toggleMenu();
+            });
+
+            navOverlay.addEventListener('click', toggleMenu);
+
+            // Tutup menu saat klik link
+            const navLinks = navMenu.querySelectorAll('a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    if (navMenu.classList.contains('active')) {
+                        toggleMenu();
+                    }
+                });
+            });
+
+            // Tutup menu saat resize
+            window.addEventListener('resize', function() {
+                if (navMenu.classList.contains('active')) {
+                    toggleMenu();
+                }
+            });
+
+            // Tutup menu dengan ESC key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+                    toggleMenu();
+                }
+            });
+
+            // Smooth scrolling untuk anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+
+
+
+<section class="page-header">
+    <div class="container">
+        <h1>Pesan Bubur Jagung</h1>
+        <p>Pilih menu dan topping favorit Anda</p>
+    </div>
+</section>
+
+<style>
+/* Page Header Styles */
+.page-header {
+    position: relative;
+    padding: 120px 0 80px;
+    color: #fff;
+    text-align: center;
+    background: linear-gradient(120deg, rgba(241, 245, 38, 0.85), rgba(102, 196, 49, 0.85)),
+                url('../assets/images/bubur2.jpg') center/cover no-repeat;
+    overflow: hidden;
+    margin-top: 70px;
+    min-height: 300px;
+}
+
+.page-header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(-45deg, rgb(255, 237, 79), #c2ff85, rgb(184, 131, 7), rgb(172, 184, 175));
+    background-size: 300% 300%;
+    animation: gradientMove 15s ease infinite;
+    opacity: 0.6;
+    z-index: 1;
+    mix-blend-mode: overlay;
+}
+
+.page-header .container {
+    position: relative;
+    z-index: 3;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.page-header h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.page-header p {
+    font-size: 20px;
+    margin-bottom: 0;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    opacity: 0.9;
+    line-height: 1.4;
+}
+
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Main Content Styles */
+.order-section {
+    padding: 3rem 0;
+    background-color: var(--light-color, #f8f9fa);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Section Title */
+.section-title {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.section-title h2 {
+    font-size: 2.5rem;
+    color: var(--secondary-color, #2e7d32);
+    margin-bottom: 1rem;
+    font-weight: 700;
+    position: relative;
+    display: inline-block;
+}
+
+.section-title h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(45deg, var(--primary-color, #f9a825), var(--secondary-color, #2e7d32));
+    border-radius: 2px;
+}
+
+/* Alert Styles */
+.alert {
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    border: none;
+    font-weight: 500;
+    position: relative;
+    overflow: hidden;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #d4edda, #c3e6cb);
+    color: #155724;
+    border-left: 4px solid #28a745;
+}
+
+.alert-error {
+    background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+    color: #721c24;
+    border-left: 4px solid #dc3545;
+}
+
+.alert::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    animation: shimmer 2s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* Form Styles */
+.order-form {
+    background: #ffffff;
+    padding: 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.order-form::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, var(--primary-color, #f9a825), var(--secondary-color, #2e7d32));
+}
+
+.form-title {
+    font-size: 28px;
+    color: var(--primary-color, #f9a825);
+    margin-bottom: 2rem;
+    text-align: center;
+    font-weight: 700;
+    position: relative;
+}
+
+.form-title::before {
+    content: '🛒';
+    margin-right: 10px;
+}
+
+/* Form Group Styles */
+.form-group {
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.form-label {
+    font-weight: 600;
+    color: var(--secondary-color, #2e7d32);
+    font-size: 16px;
+    margin-bottom: 0.75rem;
+    display: block;
+    position: relative;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background: #fff;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary-color, #f9a825);
+    box-shadow: 0 0 0 3px rgba(165, 233, 7, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Select Dropdown */
+.form-control select {
+    cursor: pointer;
+}
+
+/* Options Grid */
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.option-item {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border: 2px solid #dee2e6;
+    padding: 12px 16px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.option-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary-color, #f9a825);
+}
+
+.option-item.flavor-option {
+    background: linear-gradient(135deg, #f6fff7, #e8f5e8);
+    border-color: #c3e6cb;
+}
+
+.option-item.flavor-option:hover {
+    border-color: var(--secondary-color, #2e7d32);
+}
+
+.option-item.topping-option {
+    background: linear-gradient(135deg, #fffef3, #fff8e1);
+    border-color: #ffeaa7;
+}
+
+.option-item.topping-option:hover {
+    border-color: var(--primary-color, #f9a825);
+}
+
+.option-item input[type="radio"],
+.option-item input[type="checkbox"] {
+    margin-right: 12px;
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary-color, #f9a825);
+}
+
+.option-item label {
+    margin: 0;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    user-select: none;
+}
+
+.option-item input:checked + label,
+.option-item input[type="radio"]:checked ~ label,
+.option-item input[type="checkbox"]:checked ~ label {
+    color: var(--secondary-color, #2e7d32);
+    font-weight: 600;
+}
+
+/* Quantity Input */
+.quantity-input {
+    width: 120px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 2px solid #e9ecef;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 8px;
+}
+
+.quantity-input:focus {
+    border-color: var(--primary-color, #f9a825);
+    box-shadow: 0 0 0 3px rgba(249, 168, 37, 0.1);
+}
+
+/* Submit Button */
+.btn-submit {
+    background: linear-gradient(135deg, var(--primary-color, #f9a825), #e6a800);
+    color: white;
+    padding: 14px 32px;
+    border: none;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    margin-top: 1rem;
+    display: inline-block;
+    text-decoration: none;
+}
+
+.btn-submit:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(249, 168, 37, 0.3);
+}
+
+.btn-submit:active {
+    transform: translateY(-1px);
+}
+
+.btn-submit::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn-submit:hover::before {
+    left: 100%;
+}
+
+/* Back to Top Button */
+.back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: var(--primary-color, #f9a825);
+    color: var(--secondary-color, #2e7d32);
+    border: none;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s;
+    z-index: 999;
+}
+
+.back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.back-to-top:hover {
+    background: var(--secondary-color, #2e7d32);
+    color: white;
+    transform: translateY(-5px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .page-header {
+        padding: 100px 0 60px;
+        min-height: 250px;
+    }
+    
+    .page-header h1 {
+        font-size: 32px;
+    }
+
+    .page-header p {
+        font-size: 16px;
+    }
+
+    .order-form {
+        padding: 1.5rem;
+    }
+
+    .form-title {
+        font-size: 24px;
+    }
+
+    .options-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .section-title h2 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .page-header {
+        padding: 80px 0 50px;
+        min-height: 200px;
+    }
+    
+    .page-header h1 {
+        font-size: 28px;
+    }
+    
+    .page-header p {
+        font-size: 14px;
+    }
+
+    .order-form {
+        padding: 1rem;
+    }
+
+    .form-title {
+        font-size: 20px;
+    }
+}
+
+/* Animation Classes */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.pulse {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+</style>
+
+<!-- Font Awesome untuk Icons -->
+<link rel="stylesheet" href="./order_files/all.min.css">
+
+<!-- Main Content -->
+<main class="order-section">
+    <div class="container">
+        
+        <div class="section-title">
+            <h2>Form Pemesanan</h2>
+        </div>
+
+        <form action="http://localhost/kedai_bubur_jagung/customer/order.php" method="post" class="order-form fade-in show" id="orderForm">
+            <h3 class="form-title">Pesan Bubur Jagung</h3>
+
+            <!-- Pilih Menu -->
+            <div class="form-group">
+                <label for="menu_id" class="form-label">
+                    <i class="fas fa-utensils"></i>
+                    Pilih Menu
+                </label>
+                <select name="menu_id" id="menu_id" class="form-control" required="">
+                    <option value="">-- Pilih Menu --</option>
+                                            <option value="4">
+                            Bubur Jagung Medium - Rp 8.000                        </option>
+                                            <option value="5">
+                            Bubur Jagung Jumbo - Rp 10.000                        </option>
+                                            <option value="6">
+                            Bubur Jagung Special - Rp 15.000                        </option>
+                                    </select>
+            </div>
+
+            <!-- Pilih Flavor Milk -->
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="fas fa-glass-whiskey"></i>
+                    Pilih Flavor Milk <small>(Opsional)</small>
+                </label>
+                <div class="options-grid">
+                    <div class="option-item flavor-option" style="transform: translateY(0px) scale(1);">
+                        <input type="radio" name="flavor_milk" id="flavor_none" value="" checked="">
+                        <label for="flavor_none">Tanpa Flavor Milk</label>
+                    </div>
+                                            <div class="option-item flavor-option">
+                            <input type="radio" name="flavor_milk" id="flavor_9" value="9">
+                            <label for="flavor_9">
+                                Flavor Milk Alpukat (+Rp 10.000)
+                            </label>
+                        </div>
+                                            <div class="option-item flavor-option">
+                            <input type="radio" name="flavor_milk" id="flavor_2" value="2">
+                            <label for="flavor_2">
+                                Flavor Milk Blueberry (+Rp 10.000)
+                            </label>
+                        </div>
+                                            <div class="option-item flavor-option">
+                            <input type="radio" name="flavor_milk" id="flavor_5" value="5">
+                            <label for="flavor_5">
+                                Flavor Milk Cappucino (+Rp 10.000)
+                            </label>
+                        </div>
+                                            <div class="option-item flavor-option" style="transform: translateY(0px) scale(1);">
+                            <input type="radio" name="flavor_milk" id="flavor_1" value="1">
+                            <label for="flavor_1">
+                                Flavor Milk Cokelat (+Rp 10.000)
+                            </label>
+                        </div>
+                                            <div class="option-item flavor-option">
+                            <input type="radio" name="flavor_milk" id="flavor_10" value="10">
+                            <label for="flavor_10">
+                                Flavor Milk Durian (+Rp 10.000)
+                            </label>
+                        </div>
+                                            <div class="option-item flavor-option">
+                            <input type="radio" name="flavor_milk" id="flavor_7" value="7">
+                            <label for="flavor_7">
+                                Flavor Milk Mangga (+Rp 10.000)
+                            </label>
+                        </div>
+                                            <div class="option-item flavor-option">
+                            <input type="radio" name="flavor_milk" id="flavor_4" value="4">
+                            <label for="flavor_4">
+                                Flavor Milk Red Velvet (+Rp 10.000)
+                            </label>
+                        </div>
+                                            <div class="option-item flavor-option" style="transform: translateY(0px) scale(1);">
+                            <input type="radio" name="flavor_milk" id="flavor_3" value="3">
+                            <label for="flavor_3">
+                                Flavor Milk Strawberry (+Rp 10.000)
+                            </label>
+                        </div>
+                                            <div class="option-item flavor-option">
+                            <input type="radio" name="flavor_milk" id="flavor_8" value="8">
+                            <label for="flavor_8">
+                                Flavor Milk Taro (+Rp 10.000)
+                            </label>
+                        </div>
+                                            <div class="option-item flavor-option">
+                            <input type="radio" name="flavor_milk" id="flavor_6" value="6">
+                            <label for="flavor_6">
+                                Flavor Milk Vanilla (+Rp 10.000)
+                            </label>
+                        </div>
+                                    </div>
+            </div>
+
+            <!-- Pilih Topping -->
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="fas fa-plus-circle"></i>
+                    Pilih Topping <small>(Opsional)</small>
+                </label>
+                <div class="options-grid">
+                                            <div class="option-item topping-option">
+                            <input type="checkbox" name="toppings[]" id="topping_4" value="4">
+                            <label for="topping_4">
+                                Bobba (+Rp 3.000)
+                            </label>
+                        </div>
+                                            <div class="option-item topping-option">
+                            <input type="checkbox" name="toppings[]" id="topping_3" value="3">
+                            <label for="topping_3">
+                                Crunch Ball (+Rp 2.000)
+                            </label>
+                        </div>
+                                            <div class="option-item topping-option">
+                            <input type="checkbox" name="toppings[]" id="topping_1" value="1">
+                            <label for="topping_1">
+                                Keju (+Rp 2.000)
+                            </label>
+                        </div>
+                                            <div class="option-item topping-option">
+                            <input type="checkbox" name="toppings[]" id="topping_2" value="2">
+                            <label for="topping_2">
+                                Oreo (+Rp 2.000)
+                            </label>
+                        </div>
+                                    </div>
+            </div>
+
+            <!-- Jumlah -->
+            <div class="form-group">
+                <label for="quantity" class="form-label">
+                    <i class="fas fa-sort-numeric-up"></i>
+                    Jumlah
+                </label>
+                <input type="number" name="quantity" id="quantity" class="quantity-input" min="1" value="1" required="">
+            </div>
+
+            <button type="submit" name="add_to_cart" class="btn">
+                <i class="fas fa-shopping-cart"></i>
+                Tambah ke Keranjang
+            </button>
+        </form>
+    </div>
+</main>
+
+<!-- Back to Top Button -->
+<button class="back-to-top show" id="backToTop">
+    <i class="fas fa-chevron-up"></i>
+</button>
+
+<script>
+    // Back to top functionality
+    const backToTopBtn = document.getElementById('backToTop');
+    
+    window.addEventListener('scroll', function() {
+        if (window.pageYOffset > 300) {
+            backToTopBtn.classList.add('show');
+        } else {
+            backToTopBtn.classList.remove('show');
+        }
+    });
+
+    backToTopBtn.addEventListener('click', function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+
+    // Fade in animation
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('show');
+            }
+        });
+    }, observerOptions);
+
+    // Apply fade-in animation to elements
+    document.querySelectorAll('.fade-in').forEach(el => {
+        observer.observe(el);
+    });
+
+    // Smooth hover effects for option items
+    document.querySelectorAll('.option-item').forEach(item => {
+        item.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-2px) scale(1.02)';
+        });
+        
+        item.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+
+        // Click effect for better UX
+        item.addEventListener('click', function(e) {
+            const input = this.querySelector('input');
+            if (e.target !== input) {
+                input.click();
+            }
+        });
+    });
+
+    // Form validation with visual feedback
+    const form = document.getElementById('orderForm');
+    const menuSelect = document.getElementById('menu_id');
+    const quantityInput = document.getElementById('quantity');
+    const submitBtn = document.getElementById('submitBtn');
+
+    form.addEventListener('submit', function(e) {
+        let isValid = true;
+        
+        // Check menu selection
+        if (!menuSelect.value) {
+            menuSelect.style.borderColor = '#dc3545';
+            menuSelect.style.boxShadow = '0 0 0 3px rgba(220, 53, 69, 0.1)';
+            isValid = false;
+        } else {
+            menuSelect.style.borderColor = '#28a745';
+            menuSelect.style.boxShadow = '0 0 0 3px rgba(40, 167, 69, 0.1)';
+        }
+
+        // Check quantity
+        if (quantityInput.value < 1) {
+            quantityInput.style.borderColor = '#dc3545';
+            quantityInput.style.boxShadow = '0 0 0 3px rgba(220, 53, 69, 0.1)';
+            isValid = false;
+        } else {
+            quantityInput.style.borderColor = '#28a745';
+            quantityInput.style.boxShadow = '0 0 0 3px rgba(40, 167, 69, 0.1)';
+        }
+
+        if (!isValid) {
+            e.preventDefault();
+            // Scroll to first error
+            const firstError = document.querySelector('input[style*="border-color: rgb(220, 53, 69)"], select[style*="border-color: rgb(220, 53, 69)"]');
+            if (firstError) {
+                firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                firstError.focus();
+            }
+        } else {
+            // Show loading state
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+            submitBtn.disabled = true;
+        }
+    });
+
+    // Reset border colors when user starts typing/selecting
+    menuSelect.addEventListener('change', function() {
+        this.style.borderColor = '';
+        this.style.boxShadow = '';
+    });
+
+    quantityInput.addEventListener('input', function() {
+        this.style.borderColor = '';
+        this.style.boxShadow = '';
+    });
+
+    // Quantity input controls
+    quantityInput.addEventListener('keydown', function(e) {
+        // Allow only numbers, backspace, delete, arrow keys
+        if (![8, 9, 27, 13, 37, 38, 39, 40, 46].includes(e.keyCode) && 
+            (e.keyCode < 48 || e.keyCode > 57) && 
+            (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+    });
+
+    // Auto-scroll to form after page load
+    window.addEventListener('load', function() {
+        setTimeout(() => {
+            document.querySelector('.order-form').scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start' 
+            });
+        }, 500);
+    });
+
+    // Debug: Log form submission
+    form.addEventListener('submit', function(e) {
+        console.log('Form submitted');
+        console.log('Menu ID:', menuSelect.value);
+        console.log('Quantity:', quantityInput.value);
+        
+        // Check if flavor milk is selected
+        const selectedFlavor = document.querySelector('input[name="flavor_milk"]:checked');
+        console.log('Selected Flavor:', selectedFlavor ? selectedFlavor.value : 'none');
+        
+        // Check selected toppings
+        const selectedToppings = document.querySelectorAll('input[name="toppings[]"]:checked');
+        console.log('Selected Toppings:', Array.from(selectedToppings).map(t => t.value));
+    });
+</script>
+
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <h3>Kedai Bubur Jagung</h3>
+                    <p></p>
+                    
+                                        <p><i class="fas fa-clock"></i> <strong>Jam Buka:</strong> 11.00 - 16.00</p>
+                                    </div>
+                
+                <div class="col-12 col-md-6">
+                    <h3>Hubungi Kami</h3>
+                    
+                                        
+                                        <p>
+                        <i class="fab fa-whatsapp"></i> 
+                                                    <a href="https://wa.me/6282179132190" target="_blank" style="color: #25D366; text-decoration: none;">
+                                +62 821-7913-2190                            </a>
+                                            </p>
+                                        
+                                        
+                                        <p><i class="fas fa-envelope"></i> 
+                        <a href="mailto:info@kedaibuburjagung.com" style="color: #ffc107; text-decoration: none;">
+                            info@kedaibuburjagung.com                        </a>
+                    </p>
+                                        
+                    <!-- Social Media Links -->
+                    <div class="social-media-links" style="margin-top: 15px;">
+                                                <a href="https://www.instagram.com/buburjagung.bta" target="_blank" class="social-link instagram">
+                            <i class="fab fa-instagram"></i> @buburjagung.bta                        </a>
+                                                
+                                            </div>
+                    
+                    <p style="margin-top: 15px; font-style: italic; color: #ffc107;">
+                        🔸Bubur Jagung Maniz Creamy,<br>
+                        © Kuliner Baturaja
+                    </p> 
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <p class="text-center">© 2025 Kedai Bubur Jagung. All Rights Reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Toggle mobile menu
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        
+        if (hamburger) {
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+        }
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (navLinks && navLinks.classList.contains('active') && !e.target.closest('.navbar')) {
+                navLinks.classList.remove('active');
+            }
+        });
+    </script>
+
+    <style>
+        /* Footer Styles */
+        footer {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 50px 0 20px;
+        }
+        
+        footer h3 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+        
+        footer p {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        footer p i {
+            color: var(--primary-color);
+            width: 16px;
+            text-align: center;
+        }
+        
+        footer .row:last-child {
+            margin-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        /* Social Media Links */
+        .social-media-links {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .social-link {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .social-link:hover {
+            color: var(--primary-color);
+        }
+        
+        .social-link.instagram:hover {
+            color: #E4405F;
+        }
+        
+        .social-link.facebook:hover {
+            color: #1877F2;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            footer .col-12.col-md-6 {
+                margin-bottom: 30px;
+            }
+            
+            .social-media-links {
+                margin-top: 10px;
+            }
+            
+            footer p {
+                font-size: 14px;
+            }
+        }
+        
+        /* WhatsApp link color */
+        a[href*="wa.me"] {
+            color: #25D366 !important;
+        }
+        
+        a[href*="wa.me"]:hover {
+            color: #128C7E !important;
+        }
+    </style>
+
+</body></html>
